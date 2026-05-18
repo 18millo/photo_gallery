@@ -61,11 +61,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'photo_gallery_project.wsgi.application'
 
+_database_url = os.environ.get('DATABASE_URL') or os.environ.get('NEON_DATABASE_URL', '')
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+    'default': dj_database_url.parse(
+        _database_url or f'sqlite:///{BASE_DIR / "db.sqlite3"}',
         conn_max_age=600,
-        ssl_require='sslmode=require' in os.environ.get('DATABASE_URL', ''),
+        ssl_require='sslmode=require' in _database_url,
     )
 }
 
