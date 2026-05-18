@@ -1,10 +1,16 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from .models import UserProfile, Tag, Photo, Like
 
+TEST_STORAGES = {
+    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+    'staticfiles': {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'},
+}
 
+
+@override_settings(STORAGES=TEST_STORAGES)
 class ModelTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser', password='testpass123')
@@ -54,6 +60,7 @@ class ModelTests(TestCase):
             Like.objects.create(user=self.user, photo=self.photo, value='dislike')
 
 
+@override_settings(STORAGES=TEST_STORAGES)
 class ViewTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -194,6 +201,7 @@ class ViewTests(TestCase):
         self.assertEqual(self.photo.total_dislikes(), 1)
 
 
+@override_settings(STORAGES=TEST_STORAGES)
 class FormTests(TestCase):
     def setUp(self):
         self.client = Client()

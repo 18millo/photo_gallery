@@ -26,7 +26,7 @@ PHOTO_DATA = [
     {"title": "Cherry Blossom Tunnel", "tags": ["Nature", "Spring", "Artistic"], "url": "https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800"},
     {"title": "Wildflower Meadow", "tags": ["Nature", "Spring", "Landscape"], "url": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800"},
     {"title": "Foggy City Morning", "tags": ["City", "Urban", "Atmosphere"], "url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800"},
-    {"title": "Night City Lights", "tags": ["City", "Night", "Urban"], "url": "https://images.unsplash.com/photo-1519500098989-cd6c6e5a31f3?w=800"},
+    {"title": "Night City Lights", "tags": ["City", "Night", "Urban"], "url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800"},
     {"title": "Coastal Cliffs", "tags": ["Nature", "Ocean", "Landscape"], "url": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800"},
     {"title": "Lavender Fields", "tags": ["Nature", "Landscape", "Artistic"], "url": "https://images.unsplash.com/photo-1499002238440-d264edd596ec?w=800"},
     {"title": "Snowy Mountain Peak", "tags": ["Nature", "Mountains", "Winter"], "url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"},
@@ -57,6 +57,13 @@ PHOTO_DATA = [
     {"title": "Bamboo Forest", "tags": ["Nature", "Forest", "Artistic"], "url": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800"},
     {"title": "Rainy Street Reflections", "tags": ["Street", "Urban", "Night"], "url": "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=800"},
     {"title": "Sunset Silhouette Beach", "tags": ["Sunset", "Beach", "Nature"], "url": "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800"},
+    {"title": "Misty Pine Forest", "tags": ["Nature", "Forest", "Mountains"], "url": "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800"},
+    {"title": "Turquoise Coastline", "tags": ["Nature", "Ocean", "Beach"], "url": "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800"},
+
+    {"title": "Mountain Trail View", "tags": ["Nature", "Mountains", "Landscape"], "url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800"},
+    {"title": "City at Dusk", "tags": ["City", "Urban", "Night"], "url": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800"},
+    {"title": "Hikers on Ridge", "tags": ["People", "Mountains", "Nature"], "url": "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800"},
+    {"title": "Abstract Light Trails", "tags": ["Artistic", "Night", "City"], "url": "https://images.unsplash.com/photo-1547235001-d703406d3f17?w=800"},
 ]
 
 
