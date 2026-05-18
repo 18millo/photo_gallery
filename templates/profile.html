@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - Photo Gallery{% endblock %}
+
+{% block content %}
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Profile</h1>
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Account Info</h2>
+                    {% for field in u_form %}
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mb-6">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Profile Info</h2>
+                    {% for field in p_form %}
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-medium mb-2">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if user.profile.profile_picture %}
+                    <div class="mb-4">
+                        <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture"
+                             class="w-32 h-32 object-cover rounded-full">
+                    </div>
+                {% endif %}
+
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600">
+                        Update Profile
+                    </button>
+                    <a href="{% url 'password_change' %}" class="text-blue-500 hover:text-blue-700">
+                        Change Password
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        input[type="text"], input[type="email"], textarea, input[type="file"] {
+            @apply w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500;
+        }
+        textarea {
+            @apply h-32;
+        }
+    </style>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Photo Gallery{% endblock %}
+
+{% block content %}
+    <div class="max-w-md mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">Login</h1>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                    Login
+                </button>
+            </form>
+
+            <p class="text-center text-gray-600 text-sm mt-4">
+                Don't have an account?
+                <a href="{% url 'register' %}" class="text-blue-500 hover:text-blue-700">Register</a>
+            </p>
+        </div>
+    </div>
+
+    <style>
+        input[type="text"], input[type="password"] {
+            @apply w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500;
+        }
+    </style>
+{% endblock %}

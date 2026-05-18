@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Photo Gallery - Home{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">Photo Gallery</h1>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+            <a href="{% url 'home' %}"
+               class="px-4 py-2 rounded-full text-sm font-medium
+                      {% if not selected_tag %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                All
+            </a>
+            {% for tag in tags %}
+                <a href="{% url 'home' %}?tag={{ tag.slug }}"
+                   class="px-4 py-2 rounded-full text-sm font-medium
+                          {% if selected_tag == tag %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                    {{ tag.name }}
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if selected_tag %}
+            <p class="text-gray-600 mb-4">Showing photos tagged: <strong>{{ selected_tag.name }}</strong></p>
+        {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for photo in photos %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                <a href="{% url 'photo_detail' photo.pk %}">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
+                         class="w-full h-64 object-cover">
+                </a>
+                <div class="p-4">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                        <a href="{% url 'photo_detail' photo.pk %}" class="hover:text-blue-500">
+                            {{ photo.title }}
+                        </a>
+                    </h2>
+                    <div class="flex flex-wrap gap-1 mb-2">
+                        {% for tag in photo.tags.all %}
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">
+                                {{ tag.name }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <span class="mr-3">👍 {{ photo.total_likes }}</span>
+                        <span>👎 {{ photo.total_dislikes }}</span>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-gray-500 text-lg">No photos available yet.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
