@@ -73,6 +73,10 @@ def register(request):
 
 @login_required
 def profile(request):
+    user_photos = Photo.objects.filter(uploaded_by=request.user)
+    total_likes = sum(p.total_likes() for p in user_photos)
+    total_dislikes = sum(p.total_dislikes() for p in user_photos)
+
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
         p_form = ProfileUpdateForm(
@@ -89,4 +93,7 @@ def profile(request):
     return render(request, 'profile.html', {
         'u_form': u_form,
         'p_form': p_form,
+        'user_photos': user_photos,
+        'total_likes': total_likes,
+        'total_dislikes': total_dislikes,
     })
