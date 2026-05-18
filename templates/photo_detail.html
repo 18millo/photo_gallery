@@ -3,60 +3,73 @@
 {% block title %}{{ photo.title }} - Photo Gallery{% endblock %}
 
 {% block content %}
-    <div class="max-w-4xl mx-auto">
-        <a href="{% url 'home' %}" class="text-blue-500 hover:text-blue-700 mb-4 inline-block">&larr; Back to Gallery</a>
+    <div class="max-w-5xl mx-auto fade-in">
+        <a href="{% url 'home' %}" class="inline-flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors mb-6 group">
+            <span class="group-hover:-translate-x-1 transition-transform">←</span>
+            <span>Back to Gallery</span>
+        </a>
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-            <img src="{{ photo.image.url }}" alt="{{ photo.title }}" class="w-full max-h-[600px] object-contain bg-black">
+        <div class="glass-card rounded-3xl overflow-hidden">
+            <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4 sm:p-6">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
+                     class="w-full max-h-[70vh] object-contain rounded-2xl shadow-2xl">
+            </div>
 
-            <div class="p-6">
-                <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ photo.title }}</h1>
+            <div class="p-6 sm:p-8">
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{{ photo.title }}</h1>
 
                 {% if photo.description %}
-                    <p class="text-gray-600 mb-4">{{ photo.description }}</p>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-6">{{ photo.description }}</p>
                 {% endif %}
 
-                <div class="flex flex-wrap gap-2 mb-4">
+                <div class="flex flex-wrap gap-2 mb-6">
                     {% for tag in photo.tags.all %}
                         <a href="{% url 'home' %}?tag={{ tag.slug }}"
-                           class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300">
-                            {{ tag.name }}
+                           class="tag-chip px-4 py-2 rounded-full text-sm font-medium glass-card text-indigo-600 hover:btn-primary hover:text-white transition-all duration-300">
+                            🏷️ {{ tag.name }}
                         </a>
                     {% endfor %}
                 </div>
 
-                <div class="flex items-center justify-between border-t pt-4">
-                    <div class="text-sm text-gray-500">
-                        <span>Uploaded by <strong>{{ photo.uploaded_by.username }}</strong></span>
-                        <span class="mx-2">|</span>
-                        <span>{{ photo.uploaded_at|date:"F j, Y" }}</span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-gray-100 pt-6">
+                    <div class="flex items-center space-x-3 text-sm text-gray-500 mb-4 sm:mb-0">
+                        <span class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                            {{ photo.uploaded_by.username|first|upper }}
+                        </span>
+                        <div>
+                            <p class="font-medium text-gray-700">{{ photo.uploaded_by.username }}</p>
+                            <p>{{ photo.uploaded_at|date:"F j, Y" }}</p>
+                        </div>
                     </div>
 
                     {% if user.is_authenticated %}
-                        <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-3">
                             <form method="post" action="{% url 'like_photo' photo.pk %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="value" value="like">
                                 <button type="submit"
-                                        class="flex items-center space-x-1 px-4 py-2 rounded {% if user_interaction and user_interaction.value == 'like' %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
-                                    <span>👍</span>
-                                    <span>{{ photo.total_likes }}</span>
+                                        class="like-btn flex items-center space-x-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-300
+                                               {% if user_interaction and user_interaction.value == 'like' %}btn-primary text-white shadow-lg shadow-indigo-500/30{% else %}glass-card text-gray-600 hover:text-indigo-600 hover:shadow-md{% endif %}">
+                                    <span class="text-xl">👍</span>
+                                    <span class="font-bold">{{ photo.total_likes }}</span>
                                 </button>
                             </form>
                             <form method="post" action="{% url 'like_photo' photo.pk %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="value" value="dislike">
                                 <button type="submit"
-                                        class="flex items-center space-x-1 px-4 py-2 rounded {% if user_interaction and user_interaction.value == 'dislike' %}bg-red-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
-                                    <span>👎</span>
-                                    <span>{{ photo.total_dislikes }}</span>
+                                        class="like-btn flex items-center space-x-2 px-5 py-2.5 rounded-xl font-medium transition-all duration-300
+                                               {% if user_interaction and user_interaction.value == 'dislike' %}text-white shadow-lg shadow-red-500/30{% else %}glass-card text-gray-600 hover:text-red-600 hover:shadow-md{% endif %}"
+                                               {% if user_interaction and user_interaction.value == 'dislike' %}style="background: linear-gradient(135deg, #ef4444, #dc2626);"{% endif %}>
+                                    <span class="text-xl">👎</span>
+                                    <span class="font-bold">{{ photo.total_dislikes }}</span>
                                 </button>
                             </form>
                         </div>
                     {% else %}
-                        <p class="text-sm text-gray-500">
-                            <a href="{% url 'login' %}" class="text-blue-500 hover:text-blue-700">Login</a> to like or dislike photos.
-                        </p>
+                        <div class="glass-card rounded-xl px-5 py-3 text-sm text-gray-500">
+                            <a href="{% url 'login' %}" class="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors">Login</a> to like or dislike photos
+                        </div>
                     {% endif %}
                 </div>
             </div>

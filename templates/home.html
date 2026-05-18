@@ -3,58 +3,95 @@
 {% block title %}Photo Gallery - Home{% endblock %}
 
 {% block content %}
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Photo Gallery</h1>
+    <div class="mb-10 fade-in">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-2">
+                    Explore <span class="gradient-text">Photos</span>
+                </h1>
+                <p class="text-gray-500 text-lg">Discover stunning photos from our collection</p>
+            </div>
+            {% if selected_tag %}
+                <a href="{% url 'home' %}" class="btn-secondary mt-4 md:mt-0 px-5 py-2.5 rounded-xl text-sm font-medium inline-flex items-center space-x-2">
+                    <span>✕</span><span>Clear filter</span>
+                </a>
+            {% endif %}
+        </div>
 
-        <div class="flex flex-wrap gap-2 mb-6">
+        <div class="flex flex-wrap gap-2 mb-8">
             <a href="{% url 'home' %}"
-               class="px-4 py-2 rounded-full text-sm font-medium
-                      {% if not selected_tag %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
-                All
+               class="tag-chip px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+                      {% if not selected_tag %}btn-primary text-white shadow-lg shadow-indigo-500/25{% else %}glass-card text-gray-600 hover:text-indigo-600{% endif %}">
+                🌄 All Photos
             </a>
             {% for tag in tags %}
                 <a href="{% url 'home' %}?tag={{ tag.slug }}"
-                   class="px-4 py-2 rounded-full text-sm font-medium
-                          {% if selected_tag == tag %}bg-blue-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
-                    {{ tag.name }}
+                   class="tag-chip px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+                          {% if selected_tag == tag %}btn-primary text-white shadow-lg shadow-indigo-500/25{% else %}glass-card text-gray-600 hover:text-indigo-600{% endif %}">
+                    🏷️ {{ tag.name }}
                 </a>
             {% endfor %}
         </div>
 
         {% if selected_tag %}
-            <p class="text-gray-600 mb-4">Showing photos tagged: <strong>{{ selected_tag.name }}</strong></p>
+            <div class="glass-card rounded-2xl px-6 py-4 mb-8 inline-block">
+                <p class="text-gray-600">Showing photos tagged: <span class="font-semibold text-indigo-600">{{ selected_tag.name }}</span></p>
+            </div>
         {% endif %}
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {% for photo in photos %}
-            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-                <a href="{% url 'photo_detail' photo.pk %}">
-                    <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
-                         class="w-full h-64 object-cover">
+            <div class="group glass-card rounded-2xl overflow-hidden card-hover fade-in cursor-pointer"
+                 style="animation-delay: {{ forloop.counter0|add:"0" }}00ms">
+                <a href="{% url 'photo_detail' photo.pk %}" class="block">
+                    <div class="relative overflow-hidden aspect-[4/3]">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.title }}"
+                             class="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="absolute bottom-4 left-4 right-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <div class="flex space-x-2">
+                                <span class="bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1 text-xs font-medium text-gray-800">👁️ View Details</span>
+                            </div>
+                        </div>
+                    </div>
                 </a>
-                <div class="p-4">
-                    <h2 class="text-lg font-semibold text-gray-800 mb-2">
-                        <a href="{% url 'photo_detail' photo.pk %}" class="hover:text-blue-500">
+                <div class="p-5">
+                    <h2 class="text-lg font-bold text-gray-800 mb-2">
+                        <a href="{% url 'photo_detail' photo.pk %}" class="hover:text-indigo-600 transition-colors duration-200">
                             {{ photo.title }}
                         </a>
                     </h2>
-                    <div class="flex flex-wrap gap-1 mb-2">
+                    <div class="flex flex-wrap gap-1.5 mb-3">
                         {% for tag in photo.tags.all %}
-                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">
+                            <a href="{% url 'home' %}?tag={{ tag.slug }}"
+                               class="text-xs font-medium px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 hover:bg-indigo-100 transition-colors">
                                 {{ tag.name }}
-                            </span>
+                            </a>
                         {% endfor %}
                     </div>
-                    <div class="flex items-center text-sm text-gray-500">
-                        <span class="mr-3">👍 {{ photo.total_likes }}</span>
-                        <span>👎 {{ photo.total_dislikes }}</span>
+                    <div class="flex items-center justify-between text-sm pt-3 border-t border-gray-100">
+                        <div class="flex items-center space-x-4">
+                            <span class="flex items-center space-x-1 text-gray-500">
+                                <span class="text-lg">👍</span>
+                                <span class="font-medium">{{ photo.total_likes }}</span>
+                            </span>
+                            <span class="flex items-center space-x-1 text-gray-500">
+                                <span class="text-lg">👎</span>
+                                <span class="font-medium">{{ photo.total_dislikes }}</span>
+                            </span>
+                        </div>
+                        <span class="text-xs text-gray-400">by {{ photo.uploaded_by.username }}</span>
                     </div>
                 </div>
             </div>
         {% empty %}
-            <div class="col-span-full text-center py-12">
-                <p class="text-gray-500 text-lg">No photos available yet.</p>
+            <div class="col-span-full text-center py-20">
+                <div class="glass-card rounded-2xl p-12 max-w-lg mx-auto">
+                    <span class="text-6xl block mb-4">📷</span>
+                    <h3 class="text-2xl font-bold text-gray-700 mb-2">No photos yet</h3>
+                    <p class="text-gray-400">Check back later for new uploads!</p>
+                </div>
             </div>
         {% endfor %}
     </div>
