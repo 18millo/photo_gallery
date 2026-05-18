@@ -75,13 +75,13 @@ class ViewTests(TestCase):
         response = self.client.get(reverse('home'))
         self.assertContains(response, 'Test Photo')
 
-    def test_home_page_filter_by_tag(self):
-        response = self.client.get(reverse('home') + '?tag=nature')
+    def test_gallery_page_filter_by_tag(self):
+        response = self.client.get(reverse('gallery') + '?tag=nature')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Test Photo')
 
-    def test_home_page_filter_invalid_tag(self):
-        response = self.client.get(reverse('home') + '?tag=nonexistent')
+    def test_gallery_page_filter_invalid_tag(self):
+        response = self.client.get(reverse('gallery') + '?tag=nonexistent')
         self.assertEqual(response.status_code, 404)
 
     def test_photo_detail_page(self):

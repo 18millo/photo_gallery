@@ -106,7 +106,11 @@
                     </span>
                 </a>
 
-                <div class="flex items-center space-x-2">
+                <div class="flex items-center space-x-1 sm:space-x-2">
+                    <a href="{% url 'gallery' %}"
+                       class="btn-ghost px-3 sm:px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all {% if request.path == '/gallery/' %}text-indigo-600 dark:text-indigo-400{% endif %}">
+                        Gallery
+                    </a>
                     <button onclick="toggleDark()" class="btn-ghost w-10 h-10 rounded-xl flex items-center justify-center text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 text-lg transition-all" id="darkToggle" aria-label="Toggle dark mode">
                         <span class="dark-hidden">🌙</span>
                         <span class="dark-visible hidden">☀️</span>

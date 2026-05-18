@@ -7,7 +7,20 @@ from .models import Photo, Tag, Like, UserProfile
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
+FEATURED_COUNT = 8
+
+
 def home(request):
+    featured = Photo.objects.all()[:FEATURED_COUNT]
+    tags = Tag.objects.annotate(photo_count=Count('photos'))
+    return render(request, 'home.html', {
+        'featured': featured,
+        'tags': tags,
+        'total_photos': Photo.objects.count(),
+    })
+
+
+def gallery(request):
     tag_slug = request.GET.get('tag')
     photos = Photo.objects.all()
     tags = Tag.objects.annotate(photo_count=Count('photos'))
@@ -15,7 +28,7 @@ def home(request):
     if tag_slug:
         selected_tag = get_object_or_404(Tag, slug=tag_slug)
         photos = photos.filter(tags=selected_tag)
-    return render(request, 'home.html', {
+    return render(request, 'gallery.html', {
         'photos': photos,
         'tags': tags,
         'selected_tag': selected_tag,
